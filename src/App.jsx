@@ -6,7 +6,7 @@ import "./App.css";
 
 const App = () => (
   <div className="App">
-    <div className="p-20">
+    <div className="p-20 pt-10">
       <SearchBar />
       <MovieList />
     </div>
