@@ -1,11 +1,15 @@
-import { MovieCard } from "components/MovieCard";
+import { MovieList } from "components/MovieList";
+import { SearchBar } from "components/SearchBar";
 
 import "./App.css";
 // eslint-disable-next-line import/extensions
 
 const App = () => (
   <div className="App">
-    <MovieCard title="Hangover" type="Movie" year={1998} />
+    <div className="p-20">
+      <SearchBar />
+      <MovieList />
+    </div>
   </div>
 );
 
