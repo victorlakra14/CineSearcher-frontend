@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Search } from "@bigbinary/neeto-icons";
-import { Input, Typography } from "@bigbinary/neetoui";
+import { Input, Kbd, Typography } from "@bigbinary/neetoui";
 import moviesApi from "apis/movies";
 import useDebounce from "hooks/useDebounce";
 import { isEmpty } from "ramda";
@@ -14,6 +14,8 @@ export const MovieList = () => {
   const debouncedSearchKey = useDebounce(searchInput);
   const [isLoading, setIsLoading] = useState(true);
   const [movies, setMovies] = useState([]);
+
+  const inputRef = useRef();
 
   const fetchMovies = async () => {
     try {
@@ -31,7 +33,19 @@ export const MovieList = () => {
   };
 
   useEffect(() => {
+    const handleKeyDown = event => {
+      if (event.key === "/" && document.activeElement !== inputRef.current) {
+        event.preventDefault();
+        inputRef.current.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
     fetchMovies();
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [debouncedSearchKey]);
 
   if (isLoading) return <PageLoader />;
@@ -40,8 +54,11 @@ export const MovieList = () => {
     <>
       <div className="pr-10">
         <Input
+          autoFocus
           placeholder="Search"
           prefix={<Search />}
+          ref={inputRef}
+          suffix={<Kbd keyName="/" />}
           type="search"
           value={searchInput}
           onChange={e => setSearchInput(e.target.value)}
