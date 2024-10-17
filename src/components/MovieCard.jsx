@@ -1,13 +1,10 @@
 import { Button, Typography } from "@bigbinary/neetoui";
+import { toUpper } from "ramda";
 
-export const MovieCard = ({ title, type, year }) => (
+export const MovieCard = ({ title, type, year, poster }) => (
   <div className="neeto-ui-shadow-lg neeto-ui-rounded-lg flex w-72 flex-col space-y-1.5 px-5 pb-4">
     <div className="flex w-full justify-center">
-      <img
-        alt="movie"
-        className="h-52 w-40"
-        src="https://m.media-amazon.com/images/M/MV5BOWFlZTk5NDUtZmYxZS00N2ExLWE4YmItYTY3NzE0NTY3ZWM4XkEyXkFqcGdeQXVyMjUyNDk2ODc@._V1_SX300.jpg"
-      />
+      <img alt={title} className="h-52 w-40" src={poster} />
     </div>
     <Typography style="h2" weight="semibold">
       {title}
@@ -17,7 +14,7 @@ export const MovieCard = ({ title, type, year }) => (
       style="body2"
       weight="semibold"
     >
-      {type} • {year}
+      {toUpper(type.slice(0, 1)) + type.slice(1)} • {year}
     </Typography>
     <div>
       <Button

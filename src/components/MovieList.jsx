@@ -1,14 +1,71 @@
-import { MovieCard } from "./MovieCard";
+import { useEffect, useState } from "react";
 
-export const MovieList = () => (
-  <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
-    <MovieCard title="Hangover" type="Movie" year={1998} />
-    <MovieCard title="Hangover" type="Movie" year={1998} />
-    <MovieCard title="Hangover" type="Movie" year={1998} />
-    <MovieCard title="Hangover" type="Movie" year={1998} />
-    <MovieCard title="Hangover" type="Movie" year={1998} />
-    <MovieCard title="Hangover" type="Movie" year={1998} />
-    <MovieCard title="Hangover" type="Movie" year={1998} />
-    <MovieCard title="Hangover" type="Movie" year={1998} />
-  </div>
-);
+import { Search } from "@bigbinary/neeto-icons";
+import { Input, Typography } from "@bigbinary/neetoui";
+import moviesApi from "apis/movies";
+import useDebounce from "hooks/useDebounce";
+import { isEmpty } from "ramda";
+
+import { MovieCard } from "./MovieCard";
+import PageLoader from "./PageLoader";
+
+export const MovieList = () => {
+  const [searchInput, setSearchInput] = useState("");
+  const debouncedSearchKey = useDebounce(searchInput);
+  const [isLoading, setIsLoading] = useState(true);
+  const [movies, setMovies] = useState([]);
+
+  const fetchMovies = async () => {
+    try {
+      const response = await moviesApi.show(debouncedSearchKey);
+      if (response.Response === "False") {
+        return;
+      }
+      //   console.log(response);
+      setMovies(response.Search);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchMovies();
+  }, [debouncedSearchKey]);
+
+  if (isLoading) return <PageLoader />;
+
+  return (
+    <>
+      <div className="pr-10">
+        <Input
+          placeholder="Search"
+          prefix={<Search />}
+          type="search"
+          value={searchInput}
+          onChange={e => setSearchInput(e.target.value)}
+        />
+      </div>
+      {isEmpty(movies) ? (
+        <div className="flex h-screen w-full items-center justify-center">
+          <Typography style="h2" weight="bold">
+            Search to find your movie!!!
+          </Typography>
+        </div>
+      ) : (
+        <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
+          {movies.map(movie => (
+            <MovieCard
+              key={movie.imdbID}
+              poster={movie.Poster}
+              title={movie.Title}
+              type={movie.Type}
+              year={movie.Year}
+            />
+          ))}
+        </div>
+      )}
+    </>
+  );
+};

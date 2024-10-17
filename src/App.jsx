@@ -1,5 +1,4 @@
 import { MovieList } from "components/MovieList";
-import { SearchBar } from "components/SearchBar";
 
 import "./App.css";
 // eslint-disable-next-line import/extensions
@@ -7,7 +6,6 @@ import "./App.css";
 const App = () => (
   <div className="App">
     <div className="p-20 pt-10">
-      <SearchBar />
       <MovieList />
     </div>
   </div>
