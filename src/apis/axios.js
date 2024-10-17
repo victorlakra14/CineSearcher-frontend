@@ -37,7 +37,7 @@ const responseInterceptors = () => {
 };
 
 export default function initializeAxios() {
-  axios.defaults.baseURL = `http://www.omdbapi.com/?apikey=${process.env.REACT_APP_OMDB_API_KEY}`;
+  axios.defaults.baseURL = `http://www.omdbapi.com/`;
   setHttpHeaders();
   responseInterceptors();
 }
