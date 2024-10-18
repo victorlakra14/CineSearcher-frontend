@@ -23,7 +23,6 @@ export const MovieList = () => {
       if (response.Response === "False") {
         return;
       }
-      //   console.log(response);
       setMovies(response.Search);
     } catch (error) {
       console.error(error);
