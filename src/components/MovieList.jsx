@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Search } from "@bigbinary/neeto-icons";
 import { Input, Kbd, Typography } from "@bigbinary/neetoui";
-import moviesApi from "apis/movies";
+import { useFetchMovies } from "hooks/reactQuery/useMoviesApi";
 import useDebounce from "hooks/useDebounce";
 import { isEmpty } from "ramda";
 
@@ -12,24 +12,28 @@ import PageLoader from "./PageLoader";
 export const MovieList = () => {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearchKey = useDebounce(searchInput);
-  const [isLoading, setIsLoading] = useState(true);
-  const [movies, setMovies] = useState([]);
+  //   const [isLoading, setIsLoading] = useState(true);
+  //   const [movies, setMovies] = useState([]);
+
+  const { data: { Search: movies = [] } = {}, isLoading } = useFetchMovies({
+    s: debouncedSearchKey,
+  });
 
   const inputRef = useRef();
 
-  const fetchMovies = async () => {
-    try {
-      const response = await moviesApi.show(debouncedSearchKey);
-      if (response.Response === "False") {
-        return;
-      }
-      setMovies(response.Search);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //   const fetchMovies = async () => {
+  //     try {
+  //       const response = await moviesApi.show({ s: debouncedSearchKey });
+  //       if (response.Response === "False") {
+  //         return;
+  //       }
+  //       setMovies(response.Search);
+  //     } catch (error) {
+  //       console.error(error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
   useEffect(() => {
     const handleKeyDown = event => {
@@ -40,7 +44,7 @@ export const MovieList = () => {
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    fetchMovies();
+    // fetchMovies();
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
