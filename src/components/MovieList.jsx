@@ -1,39 +1,54 @@
+import { DEFAULT_PAGE_INDEX } from "constants/productListConstants";
+
 import { useEffect, useRef, useState } from "react";
 
+import { filterNonNull } from "@bigbinary/neeto-cist";
 import { Search } from "@bigbinary/neeto-icons";
-import { Input, Kbd, Typography } from "@bigbinary/neetoui";
+import { Input, Kbd, Pagination, Typography } from "@bigbinary/neetoui";
 import { useFetchMovies } from "hooks/reactQuery/useMoviesApi";
 import useDebounce from "hooks/useDebounce";
-import { isEmpty } from "ramda";
+import useFuncDebounce from "hooks/useFuncDebounce";
+import useQueryParams from "hooks/useQueryParams";
+import { isEmpty, mergeLeft } from "ramda";
+import { useHistory } from "react-router-dom";
+import routes from "routes";
+import { buildUrl } from "utils/url";
 
 import { MovieCard } from "./MovieCard";
 import PageLoader from "./PageLoader";
 
 export const MovieList = () => {
+  const inputRef = useRef();
+  const history = useHistory();
+  const queryParams = useQueryParams();
+  const { page, s } = queryParams;
+
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearchKey = useDebounce(searchInput);
-  //   const [isLoading, setIsLoading] = useState(true);
-  //   const [movies, setMovies] = useState([]);
 
-  const { data: { Search: movies = [] } = {}, isLoading } = useFetchMovies({
-    s: debouncedSearchKey,
+  const moviesParams = {
+    s,
+    page: Number(page) || DEFAULT_PAGE_INDEX,
+  };
+
+  const { data: { Search: movies = [], totalResults } = {}, isLoading } =
+    useFetchMovies(moviesParams);
+
+  const handlePageNavigation = page =>
+    history.replace(
+      buildUrl(routes.movies.index, mergeLeft({ page }, queryParams))
+    );
+
+  const updateQueryParams = useFuncDebounce(value => {
+    const params = {
+      page: DEFAULT_PAGE_INDEX,
+      s: value || null,
+    };
+
+    setSearchInput(value);
+
+    history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
   });
-
-  const inputRef = useRef();
-
-  //   const fetchMovies = async () => {
-  //     try {
-  //       const response = await moviesApi.show({ s: debouncedSearchKey });
-  //       if (response.Response === "False") {
-  //         return;
-  //       }
-  //       setMovies(response.Search);
-  //     } catch (error) {
-  //       console.error(error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
 
   useEffect(() => {
     const handleKeyDown = event => {
@@ -44,7 +59,6 @@ export const MovieList = () => {
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    // fetchMovies();
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
@@ -54,7 +68,7 @@ export const MovieList = () => {
   if (isLoading) return <PageLoader />;
 
   return (
-    <>
+    <div className="p-20 pt-10">
       <div className="pr-10">
         <Input
           autoFocus
@@ -64,7 +78,10 @@ export const MovieList = () => {
           suffix={<Kbd keyName="/" />}
           type="search"
           value={searchInput}
-          onChange={e => setSearchInput(e.target.value)}
+          onChange={({ target: { value } }) => {
+            updateQueryParams(value);
+            setSearchInput(value);
+          }}
         />
       </div>
       {isEmpty(movies) ? (
@@ -74,18 +91,28 @@ export const MovieList = () => {
           </Typography>
         </div>
       ) : (
-        <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
-          {movies.map(movie => (
-            <MovieCard
-              key={movie.imdbID}
-              poster={movie.Poster}
-              title={movie.Title}
-              type={movie.Type}
-              year={movie.Year}
+        <>
+          <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
+            {movies.map(movie => (
+              <MovieCard
+                key={movie.imdbID}
+                poster={movie.Poster}
+                title={movie.Title}
+                type={movie.Type}
+                year={movie.Year}
+              />
+            ))}
+          </div>
+          <div className="mb-5 mt-10 flex justify-end self-end">
+            <Pagination
+              count={totalResults}
+              navigate={handlePageNavigation}
+              pageNo={Number(page) || DEFAULT_PAGE_INDEX}
+              pageSize={10}
             />
-          ))}
-        </div>
+          </div>
+        </>
       )}
-    </>
+    </div>
   );
 };

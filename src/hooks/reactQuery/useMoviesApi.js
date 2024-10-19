@@ -7,4 +7,5 @@ export const useFetchMovies = params =>
   useQuery({
     queryKey: [QUERY_KEYS.MOVIES, params],
     queryFn: () => moviesApi.show(params),
+    keepPreviousData: true,
   });
