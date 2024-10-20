@@ -1,23 +1,16 @@
+import { MovieList } from "components/MovieList";
+import { Route, Switch, Redirect } from "react-router-dom";
+import routes from "routes";
+
 import "./App.css";
 // eslint-disable-next-line import/extensions
-import logo from "./logo.svg";
 
 const App = () => (
   <div className="App">
-    <header className="App-header">
-      <img alt="logo" className="App-logo" src={logo} />
-      <p>
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        Learn React
-      </a>
-    </header>
+    <Switch>
+      <Route exact component={MovieList} path={routes.movies.index} />
+      <Redirect exact from={routes.root} to={routes.movies.index} />
+    </Switch>
   </div>
 );
 
