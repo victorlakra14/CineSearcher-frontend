@@ -95,8 +95,9 @@ export const MovieList = () => {
           <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
             {movies.map(movie => (
               <MovieCard
+                id={movie.imdbID}
                 key={movie.imdbID}
-                poster={movie.Poster}
+                posterURL={movie.Poster}
                 title={movie.Title}
                 type={movie.Type}
                 year={movie.Year}
