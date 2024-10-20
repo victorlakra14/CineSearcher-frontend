@@ -93,20 +93,22 @@ export const MovieList = () => {
         </div>
       ) : (
         <>
-          <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
-            {movies.map(movie => (
-              <MovieCard
-                id={movie.imdbID}
-                key={movie.imdbID}
-                posterURL={movie.Poster}
-                title={movie.Title}
-                type={movie.Type}
-                year={movie.Year}
-              />
-            ))}
-          </div>
-          <div>
-            <MoviesHistory />
+          <div className="flex">
+            <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
+              {movies.map(movie => (
+                <MovieCard
+                  id={movie.imdbID}
+                  key={movie.imdbID}
+                  posterURL={movie.Poster}
+                  title={movie.Title}
+                  type={movie.Type}
+                  year={movie.Year}
+                />
+              ))}
+            </div>
+            <div>
+              <MoviesHistory />
+            </div>
           </div>
           <div className="mb-5 mt-10 flex justify-end self-end">
             <Pagination

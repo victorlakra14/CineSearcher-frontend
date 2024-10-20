@@ -6,12 +6,18 @@ import useViewHistoryStore from "stores/useViewHistoryStore";
 export const MoviesHistory = () => {
   const { viewHistory = [] } = useViewHistoryStore();
   const recentMovieRef = useRef(null);
+  const containerRef = useRef(null);
 
   useEffect(() => {
-    if (recentMovieRef.current) {
-      recentMovieRef.current.scrollIntoView({
+    if (recentMovieRef.current && containerRef.current) {
+      const recentMovie = recentMovieRef.current;
+      const container = containerRef.current;
+
+      const topOffSet = recentMovie.offsetTop - container.offsetTop;
+
+      container.scrollTo({
+        top: topOffSet - 130,
         behavior: "smooth",
-        block: "start",
       });
     }
   }, [viewHistory]);
@@ -21,7 +27,10 @@ export const MoviesHistory = () => {
       <Typography style="h2" weight="bold">
         View History
       </Typography>
-      <div className="flex max-h-80 flex-col gap-2 overflow-y-auto">
+      <div
+        className="flex max-h-80 flex-col gap-2 overflow-y-auto"
+        ref={containerRef}
+      >
         {viewHistory.map(movie => (
           <div
             key={movie.id}
