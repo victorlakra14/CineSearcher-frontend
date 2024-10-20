@@ -25,7 +25,7 @@ export const MovieCard = ({ id, title, type, year, posterURL }) => {
         {toUpper(type.slice(0, 1)) + type.slice(1)} • {year}
       </Typography>
       <div>
-        <MovieDetail id={id} />
+        <MovieDetail id={id} title={title} />
       </div>
     </div>
   );

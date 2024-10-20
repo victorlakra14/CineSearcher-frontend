@@ -15,6 +15,7 @@ import routes from "routes";
 import { buildUrl } from "utils/url";
 
 import { MovieCard } from "./MovieCard";
+import { MoviesHistory } from "./MoviesHistory";
 import PageLoader from "./PageLoader";
 
 export const MovieList = () => {
@@ -103,6 +104,9 @@ export const MovieList = () => {
                 year={movie.Year}
               />
             ))}
+          </div>
+          <div>
+            <MoviesHistory />
           </div>
           <div className="mb-5 mt-10 flex justify-end self-end">
             <Pagination

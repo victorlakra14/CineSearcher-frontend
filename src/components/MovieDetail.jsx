@@ -2,24 +2,18 @@ import { useState } from "react";
 
 import { Button, Modal, Typography } from "@bigbinary/neetoui";
 import { useFetchMovieDetails } from "hooks/reactQuery/useMoviesApi";
+import useViewHistoryStore from "stores/useViewHistoryStore";
 
 import PageLoader from "./PageLoader";
 
-export const MovieDetail = ({ id }) => {
+export const MovieDetail = ({ id, title }) => {
   const params = {
     i: id,
     plot: "full",
   };
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const handleClick = () => {
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  const { addToHistory } = useViewHistoryStore();
 
   const { data: movieDetails = {}, isLoading } = useFetchMovieDetails(
     params,
@@ -27,7 +21,6 @@ export const MovieDetail = ({ id }) => {
   );
 
   const {
-    Title,
     Genre = "",
     Poster: posterURL,
     Plot,
@@ -45,6 +38,15 @@ export const MovieDetail = ({ id }) => {
     posterURL === "N/A"
       ? "https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png"
       : posterURL;
+
+  const handleClick = () => {
+    setIsOpen(true);
+    addToHistory({ id, title });
+  };
+
+  const closeModal = () => {
+    setIsOpen(false);
+  };
 
   return (
     <>
@@ -71,7 +73,7 @@ export const MovieDetail = ({ id }) => {
           <>
             <div>
               <Typography id="dialog1Title" style="h2" weight="bold">
-                {Title}
+                {title}
               </Typography>
             </div>
             <div>
@@ -88,7 +90,7 @@ export const MovieDetail = ({ id }) => {
                 ))}
               </div>
               <div className="flex gap-5">
-                <img alt={Title} className="h-72" src={imageSrc} />
+                <img alt={title} className="h-72" src={imageSrc} />
                 <div>
                   <div className="mb-3 mt-1">
                     <Typography component="em" style="body2" weight="normal">
