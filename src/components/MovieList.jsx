@@ -15,6 +15,7 @@ import routes from "routes";
 import { buildUrl } from "utils/url";
 
 import { MovieCard } from "./MovieCard";
+import { MoviesHistory } from "./MoviesHistory";
 import PageLoader from "./PageLoader";
 
 export const MovieList = () => {
@@ -68,52 +69,59 @@ export const MovieList = () => {
   if (isLoading) return <PageLoader />;
 
   return (
-    <div className="p-20 pt-10">
-      <div className="pr-10">
-        <Input
-          autoFocus
-          placeholder="Search"
-          prefix={<Search />}
-          ref={inputRef}
-          suffix={<Kbd keyName="/" />}
-          type="search"
-          value={searchInput}
-          onChange={({ target: { value } }) => {
-            updateQueryParams(value);
-            setSearchInput(value);
-          }}
-        />
-      </div>
-      {isEmpty(movies) ? (
-        <div className="flex h-screen w-full items-center justify-center">
-          <Typography style="h2" weight="bold">
-            Search to find your movie!!!
-          </Typography>
+    <div className="grid grid-cols-7">
+      <div className="col-span-5 pb-20 pl-20 pr-10 pt-10">
+        <div>
+          <Input
+            autoFocus
+            placeholder="Search"
+            prefix={<Search />}
+            ref={inputRef}
+            suffix={<Kbd keyName="/" />}
+            type="search"
+            value={searchInput}
+            onChange={({ target: { value } }) => {
+              updateQueryParams(value);
+              setSearchInput(value);
+            }}
+          />
         </div>
-      ) : (
-        <>
-          <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
-            {movies.map(movie => (
-              <MovieCard
-                id={movie.imdbID}
-                key={movie.imdbID}
-                posterURL={movie.Poster}
-                title={movie.Title}
-                type={movie.Type}
-                year={movie.Year}
+        {isEmpty(movies) ? (
+          <div className="flex h-screen w-full items-center justify-center">
+            <Typography style="h2" weight="bold">
+              Search to find your movie!!!
+            </Typography>
+          </div>
+        ) : (
+          <>
+            <div>
+              <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
+                {movies.map(movie => (
+                  <MovieCard
+                    id={movie.imdbID}
+                    key={movie.imdbID}
+                    posterURL={movie.Poster}
+                    title={movie.Title}
+                    type={movie.Type}
+                    year={movie.Year}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="mb-5 mt-10 flex justify-end self-end">
+              <Pagination
+                count={totalResults}
+                navigate={handlePageNavigation}
+                pageNo={Number(page) || DEFAULT_PAGE_INDEX}
+                pageSize={10}
               />
-            ))}
-          </div>
-          <div className="mb-5 mt-10 flex justify-end self-end">
-            <Pagination
-              count={totalResults}
-              navigate={handlePageNavigation}
-              pageNo={Number(page) || DEFAULT_PAGE_INDEX}
-              pageSize={10}
-            />
-          </div>
-        </>
-      )}
+            </div>
+          </>
+        )}
+      </div>
+      <div className="col-span-2">
+        <MoviesHistory />
+      </div>
     </div>
   );
 };
