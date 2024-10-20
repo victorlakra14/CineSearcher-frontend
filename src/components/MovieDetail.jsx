@@ -37,7 +37,7 @@ export const MovieDetail = ({ id }) => {
     Year,
     Runtime,
     Language,
-    imdbRating,
+    Rated,
   } = movieDetails;
 
   const genreArray = Genre.split(", ");
@@ -87,17 +87,42 @@ export const MovieDetail = ({ id }) => {
                   </div>
                 ))}
               </div>
-              <div className="flex">
-                <img alt={Title} src={imageSrc} />
+              <div className="flex gap-5">
+                <img alt={Title} className="h-72" src={imageSrc} />
                 <div>
-                  <Typography>{Plot}</Typography>
-                  <Typography>{Director}</Typography>
-                  <Typography>{Actors}</Typography>
-                  <Typography>{BoxOffice}</Typography>
-                  <Typography>{Year}</Typography>
-                  <Typography>{Runtime}</Typography>
-                  <Typography>{Language}</Typography>
-                  <Typography>{imdbRating}</Typography>
+                  <div className="mb-3 mt-1">
+                    <Typography component="em" style="body2" weight="normal">
+                      {Plot}
+                    </Typography>
+                  </div>
+                  <Typography style="body2">
+                    <span className="font-bold">Director: </span>
+                    {Director}
+                  </Typography>
+                  <Typography style="body2">
+                    <span className="font-bold">Actors: </span>
+                    {Actors}
+                  </Typography>
+                  <Typography style="body2">
+                    <span className="font-bold">Box Office: </span>
+                    {BoxOffice}
+                  </Typography>
+                  <Typography style="body2">
+                    <span className="font-bold">Year: </span>
+                    {Year}
+                  </Typography>
+                  <Typography style="body2">
+                    <span className="font-bold">Runtime: </span>
+                    {Runtime}
+                  </Typography>
+                  <Typography style="body2">
+                    <span className="font-bold">Language: </span>
+                    {Language}
+                  </Typography>
+                  <Typography style="body2">
+                    <span className="font-bold">Rated: </span>
+                    {Rated}
+                  </Typography>
                 </div>
               </div>
             </div>
