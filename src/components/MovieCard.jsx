@@ -10,7 +10,7 @@ export const MovieCard = ({ id, title, type, year, posterURL }) => {
       : posterURL;
 
   return (
-    <div className="neeto-ui-shadow-lg neeto-ui-rounded-lg flex w-72 flex-col space-y-1.5 px-5 pb-4">
+    <div className="neeto-ui-shadow-lg neeto-ui-rounded-lg flex w-48 flex-col space-y-1.5 px-5 pb-4">
       <div className="flex w-full justify-center">
         <img alt={title} className="h-52 w-40" src={imageSrc} />
       </div>

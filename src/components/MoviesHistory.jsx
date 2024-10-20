@@ -23,10 +23,12 @@ export const MoviesHistory = () => {
   }, [viewHistory]);
 
   return (
-    <div>
-      <Typography style="h2" weight="bold">
-        View History
-      </Typography>
+    <div className="flex w-full flex-col gap-3 p-2 pt-5">
+      <div className="text-center">
+        <Typography style="h2" weight="bold">
+          View History
+        </Typography>
+      </div>
       <div
         className="flex max-h-80 flex-col gap-2 overflow-y-auto"
         ref={containerRef}
