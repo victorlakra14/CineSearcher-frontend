@@ -3,6 +3,9 @@ const routes = {
   movies: {
     index: "/movies",
   },
+  favorites: {
+    index: "/favorites",
+  },
 };
 
 export default routes;

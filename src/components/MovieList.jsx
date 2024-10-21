@@ -70,7 +70,7 @@ export const MovieList = () => {
 
   return (
     <div className="grid grid-cols-7">
-      <div className="col-span-5 pb-20 pl-20 pr-10 pt-10">
+      <div className="col-span-5 pb-20 pl-20 pr-10 pt-6">
         <div>
           <Input
             autoFocus
