@@ -22,6 +22,14 @@ const useViewHistoryStore = create(set => ({
         ],
       };
     }),
+  removeFromHistory: movieId =>
+    set(state => ({
+      viewHistory: state.viewHistory.filter(movie => movie.id !== movieId),
+    })),
+  clearHistory: () =>
+    set(() => ({
+      viewHistory: [],
+    })),
 }));
 
 export default useViewHistoryStore;
