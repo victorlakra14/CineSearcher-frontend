@@ -1,7 +1,10 @@
 import { useState } from "react";
 
-import { Button, Modal, Typography } from "@bigbinary/neetoui";
+import { Rating, RatingFilled } from "@bigbinary/neeto-icons";
+import { Button, Modal, Tooltip, Typography } from "@bigbinary/neetoui";
 import { useFetchMovieDetails } from "hooks/reactQuery/useMoviesApi";
+import { includes } from "ramda";
+import useFavoritesStore from "stores/useFavoritesStore";
 import useViewHistoryStore from "stores/useViewHistoryStore";
 
 import PageLoader from "./PageLoader";
@@ -14,6 +17,7 @@ export const MovieDetail = ({ id, title }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const { addToHistory } = useViewHistoryStore();
+  const { favorites, toggleFavorite } = useFavoritesStore();
 
   const { data: movieDetails = {}, isLoading } = useFetchMovieDetails(
     params,
@@ -31,7 +35,13 @@ export const MovieDetail = ({ id, title }) => {
     Runtime,
     Language,
     Rated,
+    imdbRating,
   } = movieDetails;
+
+  const isFavorite = includes(
+    id,
+    favorites.map(m => m.id)
+  );
 
   const genreArray = Genre.split(", ");
   const imageSrc =
@@ -71,10 +81,35 @@ export const MovieDetail = ({ id, title }) => {
           <PageLoader />
         ) : (
           <>
-            <div>
+            <div className="flex items-center gap-2">
               <Typography id="dialog1Title" style="h2" weight="bold">
                 {title}
               </Typography>
+              {isFavorite ? (
+                <Tooltip content="Remove from favorites" position="right">
+                  <Button
+                    icon={() => <RatingFilled size={18} />}
+                    label=""
+                    size="small"
+                    style="text"
+                    onClick={() =>
+                      toggleFavorite({ id, title, rating: imdbRating })
+                    }
+                  />
+                </Tooltip>
+              ) : (
+                <Tooltip content="Add to favorites" position="right">
+                  <Button
+                    icon={() => <Rating size={18} />}
+                    label=""
+                    size="small"
+                    style="text"
+                    onClick={() =>
+                      toggleFavorite({ id, title, rating: imdbRating })
+                    }
+                  />
+                </Tooltip>
+              )}
             </div>
             <div>
               <div className="genre mb-5 mt-2 flex gap-3">
