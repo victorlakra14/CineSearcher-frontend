@@ -12,8 +12,10 @@ import useQueryParams from "hooks/useQueryParams";
 import { isEmpty, mergeLeft } from "ramda";
 import { useHistory } from "react-router-dom";
 import routes from "routes";
+import useFilterStore from "stores/useFilterStore";
 import { buildUrl } from "utils/url";
 
+import { FilterOptions } from "./FilterOptions";
 import { MovieCard } from "./MovieCard";
 import { MoviesHistory } from "./MoviesHistory";
 import PageLoader from "./PageLoader";
@@ -27,9 +29,25 @@ export const MovieList = () => {
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearchKey = useDebounce(searchInput);
 
+  const { year, isMovie, isSeries } = useFilterStore();
+
+  const getType = () => {
+    if (isMovie && isSeries) {
+      return undefined;
+    } else if (isMovie) {
+      return "movie";
+    } else if (isSeries) {
+      return "series";
+    }
+
+    return undefined;
+  };
+
   const moviesParams = {
     s,
     page: Number(page) || DEFAULT_PAGE_INDEX,
+    y: year || undefined,
+    type: getType(),
   };
 
   const { data: { Search: movies = [], totalResults } = {}, isLoading } =
@@ -71,7 +89,7 @@ export const MovieList = () => {
   return (
     <div className="grid grid-cols-7">
       <div className="col-span-5 pb-20 pl-20 pr-10 pt-6">
-        <div>
+        <div className="flex gap-2">
           <Input
             autoFocus
             placeholder="Search"
@@ -85,6 +103,7 @@ export const MovieList = () => {
               setSearchInput(value);
             }}
           />
+          <FilterOptions />
         </div>
         {isEmpty(movies) ? (
           <div className="flex h-screen w-full items-center justify-center">
