@@ -84,8 +84,6 @@ export const MovieList = () => {
     };
   }, [debouncedSearchKey]);
 
-  if (isLoading) return <PageLoader />;
-
   return (
     <div className="grid grid-cols-7">
       <div className="col-span-5 pb-20 pl-20 pr-10 pt-6">
@@ -105,36 +103,42 @@ export const MovieList = () => {
           />
           <FilterOptions />
         </div>
-        {isEmpty(movies) ? (
-          <div className="flex h-screen w-full items-center justify-center">
-            <Typography style="h2" weight="bold">
-              Search to find your movie!!!
-            </Typography>
-          </div>
+        {isLoading ? (
+          <PageLoader />
         ) : (
           <>
-            <div>
-              <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
-                {movies.map(movie => (
-                  <MovieCard
-                    id={movie.imdbID}
-                    key={movie.imdbID}
-                    posterURL={movie.Poster}
-                    title={movie.Title}
-                    type={movie.Type}
-                    year={movie.Year}
-                  />
-                ))}
+            {isEmpty(movies) ? (
+              <div className="flex h-screen w-full items-center justify-center">
+                <Typography style="h2" weight="bold">
+                  Search to find your movie!!!
+                </Typography>
               </div>
-            </div>
-            <div className="mb-5 mt-10 flex justify-end self-end">
-              <Pagination
-                count={totalResults}
-                navigate={handlePageNavigation}
-                pageNo={Number(page) || DEFAULT_PAGE_INDEX}
-                pageSize={10}
-              />
-            </div>
+            ) : (
+              <>
+                <div>
+                  <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
+                    {movies.map(movie => (
+                      <MovieCard
+                        id={movie.imdbID}
+                        key={movie.imdbID}
+                        posterURL={movie.Poster}
+                        title={movie.Title}
+                        type={movie.Type}
+                        year={movie.Year}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="mb-5 mt-10 flex justify-end self-end">
+                  <Pagination
+                    count={totalResults}
+                    navigate={handlePageNavigation}
+                    pageNo={Number(page) || DEFAULT_PAGE_INDEX}
+                    pageSize={10}
+                  />
+                </div>
+              </>
+            )}
           </>
         )}
       </div>
