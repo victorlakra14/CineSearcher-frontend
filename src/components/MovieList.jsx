@@ -85,8 +85,8 @@ export const MovieList = () => {
   }, [debouncedSearchKey]);
 
   return (
-    <div className="grid grid-cols-7">
-      <div className="col-span-5 pb-20 pl-20 pr-10 pt-6">
+    <div className="mt-2 grid grid-cols-7">
+      <div className="col-span-5 border-r-2 pb-20 pl-20 pr-10 pt-6">
         <div className="flex gap-2">
           <Input
             autoFocus

@@ -36,7 +36,7 @@ export const MoviesHistory = () => {
         <Button label="Clear all" style="danger-text" onClick={clearHistory} />
       </div>
       <div
-        className="flex max-h-80 flex-col gap-2 overflow-y-auto"
+        className="flex max-h-80 flex-col gap-2 overflow-y-auto p-2"
         ref={containerRef}
       >
         {viewHistory.map(movie => (
