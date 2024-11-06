@@ -14,10 +14,10 @@ import { useHistory } from "react-router-dom";
 import routes from "routes";
 import { buildUrl } from "utils/url";
 
+import PageLoader from "./commons/PageLoader";
 import { FilterOptions } from "./FilterOptions";
 import { MovieCard } from "./MovieCard";
 import { MoviesHistory } from "./MoviesHistory";
-import PageLoader from "./PageLoader";
 
 export const MovieList = () => {
   const [searchInput, setSearchInput] = useState("");
