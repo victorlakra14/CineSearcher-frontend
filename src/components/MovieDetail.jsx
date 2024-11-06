@@ -1,18 +1,21 @@
 import { useState } from "react";
 
 import { Rating, RatingFilled } from "@bigbinary/neeto-icons";
-import { Button, Modal, Tooltip, Typography } from "@bigbinary/neetoui";
+import {
+  Button,
+  Modal,
+  Spinner,
+  Tooltip,
+  Typography,
+} from "@bigbinary/neetoui";
 import { useFetchMovieDetails } from "hooks/reactQuery/useMoviesApi";
 import { includes } from "ramda";
 import useFavoritesStore from "stores/useFavoritesStore";
 import useViewHistoryStore from "stores/useViewHistoryStore";
 
-import PageLoader from "./PageLoader";
-
 export const MovieDetail = ({ id, title }) => {
   const params = {
     i: id,
-    plot: "full",
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -78,7 +81,9 @@ export const MovieDetail = ({ id, title }) => {
         onClose={closeModal}
       >
         {isLoading ? (
-          <PageLoader />
+          <div className="flex h-80 w-full items-center justify-center">
+            <Spinner />
+          </div>
         ) : (
           <>
             <div className="flex items-center gap-2">
