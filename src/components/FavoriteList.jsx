@@ -1,8 +1,16 @@
-import { Typography } from "@bigbinary/neetoui";
+import { NoData, Typography } from "@bigbinary/neetoui";
 import useFavoritesStore from "stores/useFavoritesStore";
 
 export const FavoriteList = () => {
   const { favorites } = useFavoritesStore();
+
+  if (favorites.length === 0) {
+    return (
+      <div className="flex h-72 w-full items-center justify-center">
+        <NoData title="No favorites yet" />
+      </div>
+    );
+  }
 
   return (
     <div className="mt-10 flex flex-col items-center space-y-4 px-80">

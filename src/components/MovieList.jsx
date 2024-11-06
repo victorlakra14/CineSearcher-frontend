@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { filterNonNull } from "@bigbinary/neeto-cist";
 import { Search } from "@bigbinary/neeto-icons";
-import { Input, Kbd, Pagination, Typography } from "@bigbinary/neetoui";
+import { Input, Kbd, NoData, Pagination } from "@bigbinary/neetoui";
 import { useFetchMovies } from "hooks/reactQuery/useMoviesApi";
 import useDebounce from "hooks/useDebounce";
 import useFuncDebounce from "hooks/useFuncDebounce";
@@ -108,10 +108,8 @@ export const MovieList = () => {
         ) : (
           <>
             {isEmpty(movies) ? (
-              <div className="flex h-screen w-full items-center justify-center">
-                <Typography style="h2" weight="bold">
-                  Search to find your movie!!!
-                </Typography>
+              <div className="flex h-96 w-full items-center justify-center">
+                <NoData title="No movies found" />
               </div>
             ) : (
               <>

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 import { Delete } from "@bigbinary/neeto-icons";
-import { Button, Typography } from "@bigbinary/neetoui";
+import { Button, NoData, Typography } from "@bigbinary/neetoui";
 import useViewHistoryStore from "stores/useViewHistoryStore";
 
 export const MoviesHistory = () => {
@@ -31,7 +31,7 @@ export const MoviesHistory = () => {
     <div className="flex w-full flex-col gap-3 p-2 pt-5">
       <div className="flex items-center justify-between px-5">
         <Typography style="h3" weight="bold">
-          View History
+          View history
         </Typography>
         <Button label="Clear all" style="danger-text" onClick={clearHistory} />
       </div>
@@ -39,23 +39,29 @@ export const MoviesHistory = () => {
         className="flex max-h-80 flex-col gap-2 overflow-y-auto p-2"
         ref={containerRef}
       >
-        {viewHistory.map(movie => (
-          <div
-            key={movie.id}
-            ref={movie.isRecent ? recentMovieRef : null}
-            className={`flex items-center justify-between rounded-lg ${
-              movie.isRecent ? "bg-blue-600 text-white" : "bg-blue-100"
-            } px-5 py-2 text-center font-medium`}
-          >
-            {movie.title}
-            <div>
-              <Delete
-                className="cursor-pointer"
-                onClick={() => removeFromHistory(movie.id)}
-              />
+        {viewHistory.length > 0 ? (
+          viewHistory.map(movie => (
+            <div
+              key={movie.id}
+              ref={movie.isRecent ? recentMovieRef : null}
+              className={`flex items-center justify-between rounded-lg ${
+                movie.isRecent ? "bg-blue-600 text-white" : "bg-blue-100"
+              } px-5 py-2 text-center font-medium`}
+            >
+              {movie.title}
+              <div>
+                <Delete
+                  className="cursor-pointer"
+                  onClick={() => removeFromHistory(movie.id)}
+                />
+              </div>
             </div>
+          ))
+        ) : (
+          <div className="mt-40 flex justify-center">
+            <NoData title="View history is empty" />
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
