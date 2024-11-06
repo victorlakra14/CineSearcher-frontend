@@ -2,13 +2,16 @@ import { useState } from "react";
 
 import { Close, Filter } from "@bigbinary/neeto-icons";
 import { Button, Checkbox, Input, Typography } from "@bigbinary/neetoui";
-import useFilterStore from "stores/useFilterStore";
 
-export const FilterOptions = () => {
+export const FilterOptions = ({
+  year,
+  showMovies,
+  showSeries,
+  toggleIsMovie,
+  toggleIsSeries,
+  setYear,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const { year, isMovie, isSeries, setYear, toggleIsMovie, toggleIsSeries } =
-    useFilterStore();
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -56,13 +59,13 @@ export const FilterOptions = () => {
             </Typography>
             <div className="flex">
               <Checkbox
-                checked={isMovie}
+                checked={showMovies}
                 id="checkbox_movie"
                 label="Movie"
                 onChange={toggleIsMovie}
               />
               <Checkbox
-                checked={isSeries}
+                checked={showSeries}
                 id="checkbox_series"
                 label="Series"
                 onChange={toggleIsSeries}

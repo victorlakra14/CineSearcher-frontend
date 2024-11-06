@@ -12,7 +12,6 @@ import useQueryParams from "hooks/useQueryParams";
 import { isEmpty, mergeLeft } from "ramda";
 import { useHistory } from "react-router-dom";
 import routes from "routes";
-import useFilterStore from "stores/useFilterStore";
 import { buildUrl } from "utils/url";
 
 import { FilterOptions } from "./FilterOptions";
@@ -21,22 +20,24 @@ import { MoviesHistory } from "./MoviesHistory";
 import PageLoader from "./PageLoader";
 
 export const MovieList = () => {
+  const [searchInput, setSearchInput] = useState("");
+  const [showMovies, setShowMovies] = useState(false);
+  const [showSeries, setShowSeries] = useState(false);
+
   const inputRef = useRef();
   const history = useHistory();
   const queryParams = useQueryParams();
-  const { page, search } = queryParams;
-
-  const [searchInput, setSearchInput] = useState("");
+  const { page, search, year } = queryParams;
   const debouncedSearchKey = useDebounce(searchInput);
 
-  const { year, isMovie, isSeries } = useFilterStore();
+  const [releaseYear, setReleaseYear] = useState(year);
 
   const getType = () => {
-    if (isMovie && isSeries) {
+    if (showMovies && showSeries) {
       return undefined;
-    } else if (isMovie) {
+    } else if (showMovies) {
       return "movie";
-    } else if (isSeries) {
+    } else if (showSeries) {
       return "series";
     }
 
@@ -46,7 +47,7 @@ export const MovieList = () => {
   const moviesParams = {
     s: search,
     page: Number(page) || DEFAULT_PAGE_INDEX,
-    y: year || undefined,
+    y: releaseYear || undefined,
     type: getType(),
   };
 
@@ -62,12 +63,26 @@ export const MovieList = () => {
     const params = {
       page: DEFAULT_PAGE_INDEX,
       search: value || null,
+      year: releaseYear || null,
     };
 
     setSearchInput(value);
 
     history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
   });
+
+  const handleYearChange = newYear => {
+    setReleaseYear(newYear);
+    const params = {
+      page: DEFAULT_PAGE_INDEX,
+      search: searchInput || null,
+      year: newYear || null,
+    };
+    history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
+  };
+
+  const toggleIsMovie = () => setShowMovies(prev => !prev);
+  const toggleIsSeries = () => setShowSeries(prev => !prev);
 
   useEffect(() => {
     const handleKeyDown = event => {
@@ -101,7 +116,14 @@ export const MovieList = () => {
               setSearchInput(value);
             }}
           />
-          <FilterOptions />
+          <FilterOptions
+            setYear={handleYearChange}
+            showMovies={showMovies}
+            showSeries={showSeries}
+            toggleIsMovie={toggleIsMovie}
+            toggleIsSeries={toggleIsSeries}
+            year={releaseYear}
+          />
         </div>
         {isLoading ? (
           <PageLoader />
