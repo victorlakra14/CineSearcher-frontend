@@ -1,7 +1,6 @@
 import { Typography } from "@bigbinary/neetoui";
+import { MovieDetail } from "components/MovieDetail";
 import { toUpper } from "ramda";
-
-import { MovieDetail } from "./MovieDetail";
 
 export const MovieCard = ({ id, title, type, year, posterURL }) => {
   const imageSrc =

@@ -13,6 +13,8 @@ import { includes } from "ramda";
 import useFavoritesStore from "stores/useFavoritesStore";
 import useViewHistoryStore from "stores/useViewHistoryStore";
 
+import { DetailRow } from "./DetailRow";
+
 export const MovieDetail = ({ id, title }) => {
   const params = {
     i: id,
@@ -40,6 +42,16 @@ export const MovieDetail = ({ id, title }) => {
     Rated,
     imdbRating,
   } = movieDetails;
+
+  const rowDetails = [
+    { label: "Director", value: Director },
+    { label: "Actors", value: Actors },
+    { label: "Box Office", value: BoxOffice },
+    { label: "Year", value: Year },
+    { label: "Runtime", value: Runtime },
+    { label: "Language", value: Language },
+    { label: "Rated", value: Rated },
+  ];
 
   const isFavorite = includes(
     id,
@@ -137,34 +149,9 @@ export const MovieDetail = ({ id, title }) => {
                       {Plot}
                     </Typography>
                   </div>
-                  <Typography style="body2">
-                    <span className="font-bold">Director: </span>
-                    {Director}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Actors: </span>
-                    {Actors}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Box Office: </span>
-                    {BoxOffice}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Year: </span>
-                    {Year}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Runtime: </span>
-                    {Runtime}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Language: </span>
-                    {Language}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Rated: </span>
-                    {Rated}
-                  </Typography>
+                  {rowDetails.map(({ label, value }) => (
+                    <DetailRow key={label} label={label} value={value} />
+                  ))}
                 </div>
               </div>
             </div>
