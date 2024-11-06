@@ -24,7 +24,7 @@ export const MovieList = () => {
   const inputRef = useRef();
   const history = useHistory();
   const queryParams = useQueryParams();
-  const { page, s } = queryParams;
+  const { page, search } = queryParams;
 
   const [searchInput, setSearchInput] = useState("");
   const debouncedSearchKey = useDebounce(searchInput);
@@ -44,7 +44,7 @@ export const MovieList = () => {
   };
 
   const moviesParams = {
-    s,
+    s: search,
     page: Number(page) || DEFAULT_PAGE_INDEX,
     y: year || undefined,
     type: getType(),
@@ -61,7 +61,7 @@ export const MovieList = () => {
   const updateQueryParams = useFuncDebounce(value => {
     const params = {
       page: DEFAULT_PAGE_INDEX,
-      s: value || null,
+      search: value || null,
     };
 
     setSearchInput(value);
