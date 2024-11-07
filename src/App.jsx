@@ -6,6 +6,7 @@ import routes from "routes";
 
 import "./App.css";
 // eslint-disable-next-line import/extensions
+// Here eslint was disabled from smile cart repository
 
 const App = () => (
   <div>
