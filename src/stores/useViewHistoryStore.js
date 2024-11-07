@@ -34,11 +34,12 @@ const useViewHistoryStore = create(set => ({
       return { viewHistory: updatedHistory };
     }),
 
-  clearHistory: () => {
-    setToLocalStorage(HISTORY_LOCAL_STORAGE_KEY, []);
+  clearHistory: () =>
+    set(() => {
+      setToLocalStorage(HISTORY_LOCAL_STORAGE_KEY, []);
 
-    return { viewHistory: [] };
-  },
+      return { viewHistory: [] };
+    }),
 }));
 
 export default useViewHistoryStore;
