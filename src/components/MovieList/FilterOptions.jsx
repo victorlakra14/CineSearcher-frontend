@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Close, Filter } from "@bigbinary/neeto-icons";
 import { Button, Checkbox, Input, Typography } from "@bigbinary/neetoui";
+import { useTranslation } from "react-i18next";
 
 export const FilterOptions = ({
   year,
@@ -12,6 +13,8 @@ export const FilterOptions = ({
   setYear,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { t } = useTranslation();
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -30,7 +33,6 @@ export const FilterOptions = ({
       <div>
         <Button
           icon={() => <Filter size={20} />}
-          label=""
           size="small"
           style="text"
           onClick={toggleModal}
@@ -48,26 +50,26 @@ export const FilterOptions = ({
           </div>
           <div className="flex flex-col space-y-4">
             <Input
-              label="Year"
+              label={t("year")}
               placeholder="YYYY"
               size="small"
               value={year}
               onChange={handleInputChange}
             />
             <Typography style="body2" weight="semibold">
-              Type
+              {t("type")}
             </Typography>
             <div className="flex">
               <Checkbox
                 checked={showMovies}
                 id="checkbox_movie"
-                label="Movie"
+                label={t("movie")}
                 onChange={toggleIsMovie}
               />
               <Checkbox
                 checked={showSeries}
                 id="checkbox_series"
-                label="Series"
+                label={t("series")}
                 onChange={toggleIsSeries}
               />
             </div>

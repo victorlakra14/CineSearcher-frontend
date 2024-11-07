@@ -1,13 +1,15 @@
 import { NoData, Typography } from "@bigbinary/neetoui";
+import { useTranslation } from "react-i18next";
 import useFavoritesStore from "stores/useFavoritesStore";
 
 export const FavoriteList = () => {
+  const { t } = useTranslation();
   const { favorites } = useFavoritesStore();
 
   if (favorites.length === 0) {
     return (
       <div className="flex h-72 w-full items-center justify-center">
-        <NoData title="No favorites yet" />
+        <NoData title={t("noFavorites")} />
       </div>
     );
   }
@@ -23,7 +25,8 @@ export const FavoriteList = () => {
             {movie.title}
           </Typography>
           <Typography className="text-gray-500" weight="semibold">
-            Rating: <span className="text-gray-400">{movie.rating}/10</span>
+            {t("rating")}:{" "}
+            <span className="text-gray-400">{movie.rating}/10</span>
           </Typography>
         </div>
       ))}

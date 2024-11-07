@@ -2,9 +2,11 @@ import { useEffect, useRef } from "react";
 
 import { Delete } from "@bigbinary/neeto-icons";
 import { Button, NoData, Typography } from "@bigbinary/neetoui";
+import { useTranslation } from "react-i18next";
 import useViewHistoryStore from "stores/useViewHistoryStore";
 
 export const MoviesHistory = () => {
+  const { t } = useTranslation();
   const {
     viewHistory = [],
     removeFromHistory,
@@ -31,9 +33,13 @@ export const MoviesHistory = () => {
     <div className="flex w-full flex-col gap-3 p-2 pt-5">
       <div className="flex items-center justify-between px-5">
         <Typography style="h3" weight="bold">
-          View history
+          {t("viewHistory")}
         </Typography>
-        <Button label="Clear all" style="danger-text" onClick={clearHistory} />
+        <Button
+          label={t("clearAll")}
+          style="danger-text"
+          onClick={clearHistory}
+        />
       </div>
       <div
         className="flex max-h-80 flex-col gap-2 overflow-y-auto p-2"
@@ -59,7 +65,7 @@ export const MoviesHistory = () => {
           ))
         ) : (
           <div className="mt-40 flex justify-center">
-            <NoData title="View history is empty" />
+            <NoData title={t("noHistory")} />
           </div>
         )}
       </div>

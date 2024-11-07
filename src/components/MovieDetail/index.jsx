@@ -10,6 +10,7 @@ import {
 } from "@bigbinary/neetoui";
 import { useFetchMovieDetails } from "hooks/reactQuery/useMoviesApi";
 import { includes } from "ramda";
+import { useTranslation } from "react-i18next";
 import useFavoritesStore from "stores/useFavoritesStore";
 import useViewHistoryStore from "stores/useViewHistoryStore";
 
@@ -21,6 +22,7 @@ export const MovieDetail = ({ id, title }) => {
   };
 
   const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation();
   const { addToHistory } = useViewHistoryStore();
   const { favorites, toggleFavorite } = useFavoritesStore();
 
@@ -44,13 +46,13 @@ export const MovieDetail = ({ id, title }) => {
   } = movieDetails;
 
   const rowDetails = [
-    { label: "Director", value: Director },
-    { label: "Actors", value: Actors },
-    { label: "Box Office", value: BoxOffice },
-    { label: "Year", value: Year },
-    { label: "Runtime", value: Runtime },
-    { label: "Language", value: Language },
-    { label: "Rated", value: Rated },
+    { label: t("movieDetail.director"), value: Director },
+    { label: t("movieDetail.actors"), value: Actors },
+    { label: t("movieDetail.boxOffice"), value: BoxOffice },
+    { label: t("movieDetail.year"), value: Year },
+    { label: t("movieDetail.runtime"), value: Runtime },
+    { label: t("movieDetail.language"), value: Language },
+    { label: t("movieDetail.rated"), value: Rated },
   ];
 
   const isFavorite = includes(
@@ -82,7 +84,7 @@ export const MovieDetail = ({ id, title }) => {
         onClick={handleClick}
       >
         <Typography style="body2" weight="bold">
-          View Details
+          {t("viewDetail")}
         </Typography>
       </Button>
       <Modal
@@ -103,7 +105,7 @@ export const MovieDetail = ({ id, title }) => {
                 {title}
               </Typography>
               {isFavorite ? (
-                <Tooltip content="Remove from favorites" position="right">
+                <Tooltip content={t("removeAsFavorite")} position="right">
                   <Button
                     icon={() => <RatingFilled size={18} />}
                     label=""
@@ -115,10 +117,9 @@ export const MovieDetail = ({ id, title }) => {
                   />
                 </Tooltip>
               ) : (
-                <Tooltip content="Add to favorites" position="right">
+                <Tooltip content={t("addAsFavorite")} position="right">
                   <Button
                     icon={() => <Rating size={18} />}
-                    label=""
                     size="small"
                     style="text"
                     onClick={() =>

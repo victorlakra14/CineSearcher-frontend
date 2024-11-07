@@ -10,6 +10,7 @@ import useDebounce from "hooks/useDebounce";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
 import { isEmpty, mergeLeft } from "ramda";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import routes from "routes";
 import { buildUrl } from "utils/url";
@@ -25,6 +26,7 @@ export const MovieList = () => {
   const [showMovies, setShowMovies] = useState(false);
   const [showSeries, setShowSeries] = useState(false);
 
+  const { t } = useTranslation();
   const inputRef = useRef();
   const history = useHistory();
   const queryParams = useQueryParams();
@@ -106,7 +108,7 @@ export const MovieList = () => {
         <div className="flex gap-2">
           <Input
             autoFocus
-            placeholder="Search"
+            placeholder={t("search")}
             prefix={<Search />}
             ref={inputRef}
             suffix={<Kbd keyName="/" />}
@@ -132,7 +134,7 @@ export const MovieList = () => {
           <>
             {isEmpty(movies) ? (
               <div className="flex h-96 w-full items-center justify-center">
-                <NoData title="No movies found" />
+                <NoData title={t("noMovies")} />
               </div>
             ) : (
               <>
