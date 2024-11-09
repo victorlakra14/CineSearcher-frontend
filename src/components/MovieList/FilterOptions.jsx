@@ -1,8 +1,12 @@
 import { useState } from "react";
 
 import { Close, Filter } from "@bigbinary/neeto-icons";
-import { Button, Checkbox, Input, Typography } from "@bigbinary/neetoui";
+import { Button, Checkbox, Typography } from "@bigbinary/neetoui";
+import { Form as NeetoUiForm } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
+
+import { AutoSubmitOnBlurInput } from "./AutoSubmitOnBlurInput";
+import { YEAR_INPUT_VALIDATION_SCHEMA } from "./constants";
 
 export const FilterOptions = ({
   year,
@@ -18,10 +22,6 @@ export const FilterOptions = ({
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
-  };
-
-  const handleInputChange = e => {
-    setYear(e.target.value);
   };
 
   const handleModalClose = () => {
@@ -49,13 +49,23 @@ export const FilterOptions = ({
             />
           </div>
           <div className="flex flex-col space-y-4">
-            <Input
-              label={t("year")}
-              placeholder="YYYY"
-              size="small"
-              value={year}
-              onChange={handleInputChange}
-            />
+            <NeetoUiForm
+              formProps={{ noValidate: true }}
+              formikProps={{
+                initialValues: { releaseYear: year || "" },
+                validationSchema: YEAR_INPUT_VALIDATION_SCHEMA,
+                onSubmit: values => {
+                  setYear(values.releaseYear);
+                },
+              }}
+            >
+              <AutoSubmitOnBlurInput
+                label={t("year")}
+                name="releaseYear"
+                placeholder="YYYY"
+                size="small"
+              />
+            </NeetoUiForm>
             <Typography style="body2" weight="semibold">
               {t("type")}
             </Typography>

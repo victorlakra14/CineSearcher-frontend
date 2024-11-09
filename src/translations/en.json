@@ -26,5 +26,11 @@
   "noHistory": "View history is empty",
   "clearAll": "Clear all",
   "noFavorites": "No favorites yet",
-  "rating": "Rating"
+  "rating": "Rating",
+  "validations": {
+    "yearMustBeNumber": "Year must be a number",
+    "yearMustBeInteger": "Year must be an integer",
+    "minYear": "Year cannot be earlier than 1888",
+    "maxYear": "Year cannot be later than {{currentYear}}"
+  }
 }
