@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import { Close, Filter } from "@bigbinary/neeto-icons";
-import { Button, Checkbox, Typography } from "@bigbinary/neetoui";
+import { Close, Filter } from "neetoicons";
+import { Button, Checkbox, Typography } from "neetoui";
 import { Form as NeetoUiForm } from "neetoui/formik";
 import { useTranslation } from "react-i18next";
 

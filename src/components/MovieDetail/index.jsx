@@ -1,14 +1,8 @@
 import { useState } from "react";
 
-import { Rating, RatingFilled } from "@bigbinary/neeto-icons";
-import {
-  Button,
-  Modal,
-  Spinner,
-  Tooltip,
-  Typography,
-} from "@bigbinary/neetoui";
 import { useFetchMovieDetails } from "hooks/reactQuery/useMoviesApi";
+import { Rating, RatingFilled } from "neetoicons";
+import { Button, Modal, Spinner, Tooltip, Typography } from "neetoui";
 import { includes } from "ramda";
 import { useTranslation } from "react-i18next";
 import useFavoritesStore from "stores/useFavoritesStore";

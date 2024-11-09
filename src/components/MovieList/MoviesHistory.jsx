@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
-import { Delete } from "@bigbinary/neeto-icons";
-import { Button, NoData, Typography } from "@bigbinary/neetoui";
+import { Delete } from "neetoicons";
+import { Button, NoData, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
 import useViewHistoryStore from "stores/useViewHistoryStore";
 

@@ -1,4 +1,4 @@
-import { Typography } from "@bigbinary/neetoui";
+import { Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 

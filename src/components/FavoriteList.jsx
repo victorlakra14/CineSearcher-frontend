@@ -1,4 +1,4 @@
-import { NoData, Typography } from "@bigbinary/neetoui";
+import { NoData, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
 import useFavoritesStore from "stores/useFavoritesStore";
 

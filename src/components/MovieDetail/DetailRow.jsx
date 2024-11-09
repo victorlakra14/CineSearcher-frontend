@@ -1,4 +1,4 @@
-import { Typography } from "@bigbinary/neetoui";
+import { Typography } from "neetoui";
 
 export const DetailRow = ({ label, value }) => (
   <Typography style="body2">

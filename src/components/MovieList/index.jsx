@@ -2,13 +2,13 @@ import { DEFAULT_PAGE_INDEX } from "constants/productListConstants";
 
 import { useEffect, useRef, useState } from "react";
 
-import { filterNonNull } from "@bigbinary/neeto-cist";
-import { Search } from "@bigbinary/neeto-icons";
-import { Input, Kbd, NoData, Pagination } from "@bigbinary/neetoui";
 import { useFetchMovies } from "hooks/reactQuery/useMoviesApi";
 import useDebounce from "hooks/useDebounce";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
+import { filterNonNull } from "neetocist";
+import { Search } from "neetoicons";
+import { Input, Kbd, NoData, Pagination } from "neetoui";
 import { isEmpty, mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
