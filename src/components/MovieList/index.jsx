@@ -140,14 +140,14 @@ export const MovieList = () => {
               <>
                 <div>
                   <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
-                    {movies.map(movie => (
+                    {movies.map(({ imdbID, Poster, Title, Type, Year }) => (
                       <MovieCard
-                        id={movie.imdbID}
-                        key={movie.imdbID}
-                        posterURL={movie.Poster}
-                        title={movie.Title}
-                        type={movie.Type}
-                        year={movie.Year}
+                        id={imdbID}
+                        key={imdbID}
+                        posterURL={Poster}
+                        title={Title}
+                        type={Type}
+                        year={Year}
                       />
                     ))}
                   </div>

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 
+import classNames from "classnames";
 import { Delete } from "neetoicons";
 import { Button, NoData, Typography } from "neetoui";
 import { useTranslation } from "react-i18next";
@@ -46,19 +47,23 @@ export const MoviesHistory = () => {
         ref={containerRef}
       >
         {viewHistory.length > 0 ? (
-          viewHistory.map(movie => (
+          viewHistory.map((id, isRecent, title) => (
             <div
-              key={movie.id}
-              ref={movie.isRecent ? recentMovieRef : null}
-              className={`flex items-center justify-between rounded-lg ${
-                movie.isRecent ? "bg-blue-600 text-white" : "bg-blue-100"
-              } px-5 py-2 text-center font-medium`}
+              key={id}
+              ref={isRecent ? recentMovieRef : null}
+              className={classNames(
+                "flex items-center justify-between rounded-lg px-5 py-2 text-center font-medium",
+                {
+                  "bg-blue-600 text-white": isRecent,
+                  "bg-blue-100": !isRecent,
+                }
+              )}
             >
-              {movie.title}
+              {title}
               <div>
                 <Delete
                   className="cursor-pointer"
-                  onClick={() => removeFromHistory(movie.id)}
+                  onClick={() => removeFromHistory(id)}
                 />
               </div>
             </div>

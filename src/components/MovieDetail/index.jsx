@@ -7,6 +7,7 @@ import { includes } from "ramda";
 import { useTranslation } from "react-i18next";
 import useFavoritesStore from "stores/useFavoritesStore";
 import useViewHistoryStore from "stores/useViewHistoryStore";
+import { setDefaultImage } from "utils/setDefaultImage";
 
 import { DetailRow } from "./DetailRow";
 
@@ -55,10 +56,7 @@ export const MovieDetail = ({ id, title }) => {
   );
 
   const genreArray = Genre.split(", ");
-  const imageSrc =
-    posterURL === "N/A"
-      ? "https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png"
-      : posterURL;
+  const imageSrc = setDefaultImage(posterURL);
 
   const handleClick = () => {
     setIsOpen(true);
