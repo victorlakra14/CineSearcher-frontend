@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import routes from "routes";
 import { createParams } from "utils/createParams";
+import { getType } from "utils/getType";
 import { buildUrl } from "utils/url";
 
 import { FilterOptions } from "./FilterOptions";
@@ -36,23 +37,11 @@ export const MovieList = () => {
 
   const [releaseYear, setReleaseYear] = useState(year);
 
-  const getType = () => {
-    if (showMovies && showSeries) {
-      return undefined;
-    } else if (showMovies) {
-      return "movie";
-    } else if (showSeries) {
-      return "series";
-    }
-
-    return undefined;
-  };
-
   const moviesParams = createParams({
     s: search,
     page: Number(page) || DEFAULT_PAGE_INDEX,
     y: releaseYear || undefined,
-    type: getType(),
+    type: getType(showMovies, showSeries),
   });
 
   const { data: { Search: movies = [], totalResults } = {}, isLoading } =

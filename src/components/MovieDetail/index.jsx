@@ -3,11 +3,12 @@ import { useState } from "react";
 import { useFetchMovieDetails } from "hooks/reactQuery/useMoviesApi";
 import { Rating, RatingFilled } from "neetoicons";
 import { Button, Modal, Spinner, Tooltip, Typography } from "neetoui";
-import { includes } from "ramda";
 import { useTranslation } from "react-i18next";
 import useFavoritesStore from "stores/useFavoritesStore";
 import useViewHistoryStore from "stores/useViewHistoryStore";
+import { checkFavorite } from "utils/checkFavorite";
 import { createParams } from "utils/createParams";
+import { getGenre } from "utils/getGenre";
 import { lowercaseFirstLetter } from "utils/lowercaseFirstLetter";
 import { setDefaultImage } from "utils/setDefaultImage";
 
@@ -52,12 +53,9 @@ export const MovieDetail = ({ id, title }) => {
     { label: t("movieDetail.rated"), value: rated },
   ];
 
-  const isFavorite = includes(
-    id,
-    favorites.map(m => m.id)
-  );
+  const isFavorite = checkFavorite(id, favorites);
 
-  const genreArray = genre.split(", ");
+  const genreArray = getGenre(genre);
   const imageSrc = setDefaultImage(posterURL);
 
   const handleClick = () => {
