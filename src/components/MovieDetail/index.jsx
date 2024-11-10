@@ -17,8 +17,8 @@ export const MovieDetail = ({ id, title }) => {
 
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
-  const { addToHistory } = useViewHistoryStore();
-  const { favorites, toggleFavorite } = useFavoritesStore();
+  const addToHistory = useViewHistoryStore.pickFrom();
+  const { favorites, toggleFavorite } = useFavoritesStore.pick();
 
   const { data: movieDetails = {}, isLoading } = useFetchMovieDetails(
     params,

@@ -11,7 +11,7 @@ export const MoviesHistory = () => {
     viewHistory = [],
     removeFromHistory,
     clearHistory,
-  } = useViewHistoryStore();
+  } = useViewHistoryStore.pick();
   const recentMovieRef = useRef(null);
   const containerRef = useRef(null);
 
