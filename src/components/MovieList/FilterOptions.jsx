@@ -62,7 +62,7 @@ export const FilterOptions = ({
               <AutoSubmitOnBlurInput
                 label={t("year")}
                 name="releaseYear"
-                placeholder="YYYY"
+                placeholder={t("yearInputPlaceholder")}
                 size="small"
               />
             </NeetoUiForm>

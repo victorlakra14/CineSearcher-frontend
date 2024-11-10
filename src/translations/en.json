@@ -19,6 +19,7 @@
   "search": "Search",
   "noMovies": "No movies found",
   "year": "Year",
+  "yearInputPlaceholder": "YYYY",
   "type": "Type",
   "movie": "Movie",
   "series": "Series",

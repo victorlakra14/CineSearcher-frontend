@@ -7,15 +7,16 @@ import { includes } from "ramda";
 import { useTranslation } from "react-i18next";
 import useFavoritesStore from "stores/useFavoritesStore";
 import useViewHistoryStore from "stores/useViewHistoryStore";
+import { createParams } from "utils/createParams";
 import { lowercaseFirstLetter } from "utils/lowercaseFirstLetter";
 import { setDefaultImage } from "utils/setDefaultImage";
 
 import { DetailRow } from "./DetailRow";
 
 export const MovieDetail = ({ id, title }) => {
-  const params = {
+  const params = createParams({
     i: id,
-  };
+  });
 
   const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();

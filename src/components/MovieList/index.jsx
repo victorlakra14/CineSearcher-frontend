@@ -13,6 +13,7 @@ import { isEmpty, mergeLeft } from "ramda";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import routes from "routes";
+import { createParams } from "utils/createParams";
 import { buildUrl } from "utils/url";
 
 import { FilterOptions } from "./FilterOptions";
@@ -47,12 +48,12 @@ export const MovieList = () => {
     return undefined;
   };
 
-  const moviesParams = {
+  const moviesParams = createParams({
     s: search,
     page: Number(page) || DEFAULT_PAGE_INDEX,
     y: releaseYear || undefined,
     type: getType(),
-  };
+  });
 
   const { data: { Search: movies = [], totalResults } = {}, isLoading } =
     useFetchMovies(moviesParams);
@@ -63,11 +64,11 @@ export const MovieList = () => {
     );
 
   const updateQueryParams = useFuncDebounce(value => {
-    const params = {
+    const params = createParams({
       page: DEFAULT_PAGE_INDEX,
       search: value || null,
       year: releaseYear || null,
-    };
+    });
 
     setSearchInput(value);
 
@@ -76,11 +77,11 @@ export const MovieList = () => {
 
   const handleYearChange = newYear => {
     setReleaseYear(newYear);
-    const params = {
+    const params = createParams({
       page: DEFAULT_PAGE_INDEX,
       search: searchInput || null,
       year: newYear || null,
-    };
+    });
     history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
   };
 
