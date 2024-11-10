@@ -1,3 +1,4 @@
+import { findById } from "neetocist";
 import { getFromLocalStorage, setToLocalStorage } from "utils/storage";
 import { create } from "zustand";
 
@@ -7,7 +8,7 @@ const useFavoritesStore = create(set => ({
   favorites: getFromLocalStorage(FAVORITE_LOCAL_STORAGE_KEY) || [],
   toggleFavorite: movie =>
     set(state => {
-      const movieExists = state.favorites.some(m => m.id === movie.id);
+      const movieExists = findById(movie.id, state.favorites);
 
       const updatedFavorites = movieExists
         ? state.favorites.filter(m => m.id !== movie.id)

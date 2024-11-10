@@ -1,3 +1,4 @@
+import { findById } from "neetocist";
 import { getFromLocalStorage, setToLocalStorage } from "utils/storage";
 import { create } from "zustand";
 
@@ -7,7 +8,7 @@ const useViewHistoryStore = create(set => ({
   viewHistory: getFromLocalStorage(HISTORY_LOCAL_STORAGE_KEY) || [],
   addToHistory: movie =>
     set(state => {
-      const movieExists = state.viewHistory.some(m => m.id === movie.id);
+      const movieExists = findById(movie.id, state.favorites);
 
       const updatedHistory = movieExists
         ? state.viewHistory.map(m => ({
