@@ -7,6 +7,7 @@ import { includes } from "ramda";
 import { useTranslation } from "react-i18next";
 import useFavoritesStore from "stores/useFavoritesStore";
 import useViewHistoryStore from "stores/useViewHistoryStore";
+import { lowercaseFirstLetter } from "utils/lowercaseFirstLetter";
 import { setDefaultImage } from "utils/setDefaultImage";
 
 import { DetailRow } from "./DetailRow";
@@ -27,27 +28,27 @@ export const MovieDetail = ({ id, title }) => {
   );
 
   const {
-    Genre = "",
-    Poster: posterURL,
-    Plot,
-    Director,
-    Actors,
-    BoxOffice,
-    Year,
-    Runtime,
-    Language,
-    Rated,
+    genre = "",
+    poster: posterURL,
+    plot,
+    director,
+    actors,
+    boxOffice,
+    year,
+    runtime,
+    language,
+    rated,
     imdbRating,
-  } = movieDetails;
+  } = lowercaseFirstLetter(movieDetails);
 
   const rowDetails = [
-    { label: t("movieDetail.director"), value: Director },
-    { label: t("movieDetail.actors"), value: Actors },
-    { label: t("movieDetail.boxOffice"), value: BoxOffice },
-    { label: t("movieDetail.year"), value: Year },
-    { label: t("movieDetail.runtime"), value: Runtime },
-    { label: t("movieDetail.language"), value: Language },
-    { label: t("movieDetail.rated"), value: Rated },
+    { label: t("movieDetail.director"), value: director },
+    { label: t("movieDetail.actors"), value: actors },
+    { label: t("movieDetail.boxOffice"), value: boxOffice },
+    { label: t("movieDetail.year"), value: year },
+    { label: t("movieDetail.runtime"), value: runtime },
+    { label: t("movieDetail.language"), value: language },
+    { label: t("movieDetail.rated"), value: rated },
   ];
 
   const isFavorite = includes(
@@ -55,7 +56,7 @@ export const MovieDetail = ({ id, title }) => {
     favorites.map(m => m.id)
   );
 
-  const genreArray = Genre.split(", ");
+  const genreArray = genre.split(", ");
   const imageSrc = setDefaultImage(posterURL);
 
   const handleClick = () => {
@@ -139,7 +140,7 @@ export const MovieDetail = ({ id, title }) => {
                 <div>
                   <div className="mb-3 mt-1">
                     <Typography component="em" style="body2" weight="normal">
-                      {Plot}
+                      {plot}
                     </Typography>
                   </div>
                   {rowDetails.map(({ label, value }) => (

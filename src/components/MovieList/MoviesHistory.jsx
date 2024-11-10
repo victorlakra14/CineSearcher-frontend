@@ -47,7 +47,7 @@ export const MoviesHistory = () => {
         ref={containerRef}
       >
         {viewHistory.length > 0 ? (
-          viewHistory.map((id, isRecent, title) => (
+          viewHistory.map(({ id, isRecent, title }) => (
             <div
               key={id}
               ref={isRecent ? recentMovieRef : null}
