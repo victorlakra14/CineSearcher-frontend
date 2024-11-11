@@ -57,6 +57,8 @@ export const MovieList = () => {
       page: DEFAULT_PAGE_INDEX,
       search: value || null,
       year: releaseYear || null,
+      showMovies: showMovies || null,
+      showSeries: showSeries || null,
     });
 
     setSearchInput(value);
@@ -70,12 +72,35 @@ export const MovieList = () => {
       page: DEFAULT_PAGE_INDEX,
       search: searchInput || null,
       year: newYear || null,
+      showMovies: showMovies || null,
+      showSeries: showSeries || null,
     });
     history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
   };
 
-  const toggleIsMovie = () => setShowMovies(prev => !prev);
-  const toggleIsSeries = () => setShowSeries(prev => !prev);
+  const toggleIsMovie = () => {
+    setShowMovies(prev => !prev);
+    const params = createParams({
+      page: DEFAULT_PAGE_INDEX,
+      search: searchInput || null,
+      year: releaseYear || null,
+      showMovies: !showMovies || null,
+      showSeries: showSeries || null,
+    });
+    history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
+  };
+
+  const toggleIsSeries = () => {
+    setShowSeries(prev => !prev);
+    const params = createParams({
+      page: DEFAULT_PAGE_INDEX,
+      search: searchInput || null,
+      year: releaseYear || null,
+      showMovies: showMovies || null,
+      showSeries: !showSeries || null,
+    });
+    history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
+  };
 
   useEffect(() => {
     const handleKeyDown = event => {
