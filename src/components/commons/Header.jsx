@@ -9,10 +9,10 @@ export const Header = () => {
     <div className="flex w-full items-center gap-10 px-10 pt-4">
       <div className="flex gap-1">
         <Typography className="text-blue-600" style="h2" weight="bold">
-          Cine
+          {t("header.cine")}
         </Typography>
         <Typography style="h2" weight="bold">
-          Searcher
+          {t("header.searcher")}
         </Typography>
       </div>
       <div className="space-x-10">

@@ -1,6 +1,7 @@
 {
-  "helloWorld": "Hello World",
   "header": {
+    "cine": "Cine",
+    "searcher": "Searcher",
     "home": "Home",
     "favorites": "Favorites"
   },
