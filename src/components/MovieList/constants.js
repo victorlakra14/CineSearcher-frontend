@@ -11,3 +11,5 @@ export const YEAR_INPUT_VALIDATION_SCHEMA = yup.object().shape({
     .min(1888, t("validations.minYear"))
     .max(currentYear, t("validations.maxYear", { currentYear })),
 });
+
+export const DEFAULT_PAGE_INDEX = 1;

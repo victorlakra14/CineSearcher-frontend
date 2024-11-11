@@ -1,5 +1,3 @@
-import { DEFAULT_PAGE_INDEX } from "constants/productListConstants";
-
 import { useEffect, useRef, useState } from "react";
 
 import { useFetchMovies } from "hooks/reactQuery/useMoviesApi";
@@ -17,6 +15,7 @@ import { createParams } from "utils/createParams";
 import { getType } from "utils/getType";
 import { buildUrl } from "utils/url";
 
+import { DEFAULT_PAGE_INDEX } from "./constants";
 import { FilterOptions } from "./FilterOptions";
 import { MovieCard } from "./MovieCard";
 import { MoviesHistory } from "./MoviesHistory";
