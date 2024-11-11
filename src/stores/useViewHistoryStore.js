@@ -1,4 +1,4 @@
-import { existsById } from "@bigbinary/neeto-cist";
+import { existsById } from "neetocist";
 import { assoc, filter, map, prepend } from "ramda";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
