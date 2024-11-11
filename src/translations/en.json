@@ -1,0 +1,38 @@
+{
+  "header": {
+    "cine": "Cine",
+    "searcher": "Searcher",
+    "home": "Home",
+    "favorites": "Favorites"
+  },
+  "viewDetail": "View Details",
+  "addAsFavorite": "Add to favorites",
+  "removeAsFavorite": "Remove from favorites",
+  "movieDetail": {
+    "director": "Director",
+    "actors": "Actors",
+    "boxOffice": "Box Office",
+    "year": "Year",
+    "runtime": "Runtime",
+    "language": "Language",
+    "rated": "Rated"
+  },
+  "search": "Search",
+  "noMovies": "No movies found",
+  "year": "Year",
+  "yearInputPlaceholder": "YYYY",
+  "type": "Type",
+  "movie": "Movie",
+  "series": "Series",
+  "viewHistory": "View history",
+  "noHistory": "View history is empty",
+  "clearAll": "Clear all",
+  "noFavorites": "No favorites yet",
+  "rating": "Rating",
+  "validations": {
+    "yearMustBeNumber": "Year must be a number",
+    "yearMustBeInteger": "Year must be an integer",
+    "minYear": "Year cannot be earlier than 1888",
+    "maxYear": "Year cannot be later than {{currentYear}}"
+  }
+}

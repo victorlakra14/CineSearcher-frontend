@@ -1,23 +1,29 @@
 import { useState } from "react";
 
-import { Rating, RatingFilled } from "@bigbinary/neeto-icons";
-import { Button, Modal, Tooltip, Typography } from "@bigbinary/neetoui";
 import { useFetchMovieDetails } from "hooks/reactQuery/useMoviesApi";
-import { includes } from "ramda";
+import { Rating, RatingFilled } from "neetoicons";
+import { Button, Modal, Spinner, Tooltip, Typography } from "neetoui";
+import { useTranslation } from "react-i18next";
 import useFavoritesStore from "stores/useFavoritesStore";
 import useViewHistoryStore from "stores/useViewHistoryStore";
+import { checkFavorite } from "utils/checkFavorite";
+import { createParams } from "utils/createParams";
+import { getGenre } from "utils/getGenre";
+import { lowercaseFirstLetter } from "utils/lowercaseFirstLetter";
+import { setDefaultImage } from "utils/setDefaultImage";
 
-import PageLoader from "./PageLoader";
+import { DetailRow } from "./DetailRow";
 
 export const MovieDetail = ({ id, title }) => {
-  const params = {
-    i: id,
-    plot: "full",
-  };
-
   const [isOpen, setIsOpen] = useState(false);
-  const { addToHistory } = useViewHistoryStore();
-  const { favorites, toggleFavorite } = useFavoritesStore();
+
+  const params = createParams({
+    i: id,
+  });
+
+  const { t } = useTranslation();
+  const addToHistory = useViewHistoryStore.pickFrom();
+  const { favorites, toggleFavorite } = useFavoritesStore.pick();
 
   const { data: movieDetails = {}, isLoading } = useFetchMovieDetails(
     params,
@@ -25,29 +31,33 @@ export const MovieDetail = ({ id, title }) => {
   );
 
   const {
-    Genre = "",
-    Poster: posterURL,
-    Plot,
-    Director,
-    Actors,
-    BoxOffice,
-    Year,
-    Runtime,
-    Language,
-    Rated,
+    genre = "",
+    poster: posterURL,
+    plot,
+    director,
+    actors,
+    boxOffice,
+    year,
+    runtime,
+    language,
+    rated,
     imdbRating,
-  } = movieDetails;
+  } = lowercaseFirstLetter(movieDetails);
 
-  const isFavorite = includes(
-    id,
-    favorites.map(m => m.id)
-  );
+  const rowDetails = [
+    { label: t("movieDetail.director"), value: director },
+    { label: t("movieDetail.actors"), value: actors },
+    { label: t("movieDetail.boxOffice"), value: boxOffice },
+    { label: t("movieDetail.year"), value: year },
+    { label: t("movieDetail.runtime"), value: runtime },
+    { label: t("movieDetail.language"), value: language },
+    { label: t("movieDetail.rated"), value: rated },
+  ];
 
-  const genreArray = Genre.split(", ");
-  const imageSrc =
-    posterURL === "N/A"
-      ? "https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png"
-      : posterURL;
+  const isFavorite = checkFavorite(id, favorites);
+
+  const genreArray = getGenre(genre);
+  const imageSrc = setDefaultImage(posterURL);
 
   const handleClick = () => {
     setIsOpen(true);
@@ -67,7 +77,7 @@ export const MovieDetail = ({ id, title }) => {
         onClick={handleClick}
       >
         <Typography style="body2" weight="bold">
-          View Details
+          {t("viewDetail")}
         </Typography>
       </Button>
       <Modal
@@ -78,7 +88,9 @@ export const MovieDetail = ({ id, title }) => {
         onClose={closeModal}
       >
         {isLoading ? (
-          <PageLoader />
+          <div className="flex h-80 w-full items-center justify-center">
+            <Spinner />
+          </div>
         ) : (
           <>
             <div className="flex items-center gap-2">
@@ -86,7 +98,7 @@ export const MovieDetail = ({ id, title }) => {
                 {title}
               </Typography>
               {isFavorite ? (
-                <Tooltip content="Remove from favorites" position="right">
+                <Tooltip content={t("removeAsFavorite")} position="right">
                   <Button
                     icon={() => <RatingFilled size={18} />}
                     label=""
@@ -98,10 +110,9 @@ export const MovieDetail = ({ id, title }) => {
                   />
                 </Tooltip>
               ) : (
-                <Tooltip content="Add to favorites" position="right">
+                <Tooltip content={t("addAsFavorite")} position="right">
                   <Button
                     icon={() => <Rating size={18} />}
-                    label=""
                     size="small"
                     style="text"
                     onClick={() =>
@@ -129,37 +140,12 @@ export const MovieDetail = ({ id, title }) => {
                 <div>
                   <div className="mb-3 mt-1">
                     <Typography component="em" style="body2" weight="normal">
-                      {Plot}
+                      {plot}
                     </Typography>
                   </div>
-                  <Typography style="body2">
-                    <span className="font-bold">Director: </span>
-                    {Director}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Actors: </span>
-                    {Actors}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Box Office: </span>
-                    {BoxOffice}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Year: </span>
-                    {Year}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Runtime: </span>
-                    {Runtime}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Language: </span>
-                    {Language}
-                  </Typography>
-                  <Typography style="body2">
-                    <span className="font-bold">Rated: </span>
-                    {Rated}
-                  </Typography>
+                  {rowDetails.map(({ label, value }) => (
+                    <DetailRow key={label} label={label} value={value} />
+                  ))}
                 </div>
               </div>
             </div>

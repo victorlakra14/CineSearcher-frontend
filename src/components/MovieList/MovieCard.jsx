@@ -1,13 +1,10 @@
-import { Typography } from "@bigbinary/neetoui";
-import { toUpper } from "ramda";
-
-import { MovieDetail } from "./MovieDetail";
+import { MovieDetail } from "components/MovieDetail";
+import { capitalize } from "neetocist";
+import { Typography } from "neetoui";
+import { setDefaultImage } from "utils/setDefaultImage";
 
 export const MovieCard = ({ id, title, type, year, posterURL }) => {
-  const imageSrc =
-    posterURL === "N/A"
-      ? "https://upload.wikimedia.org/wikipedia/commons/c/c2/No_image_poster.png"
-      : posterURL;
+  const imageSrc = setDefaultImage(posterURL);
 
   return (
     <div className="neeto-ui-shadow-lg neeto-ui-rounded-lg flex w-48 flex-col space-y-1.5 px-5 pb-4">
@@ -22,7 +19,7 @@ export const MovieCard = ({ id, title, type, year, posterURL }) => {
         style="body2"
         weight="semibold"
       >
-        {toUpper(type.slice(0, 1)) + type.slice(1)} • {year}
+        {capitalize(type)} • {year}
       </Typography>
       <div>
         <MovieDetail id={id} title={title} />

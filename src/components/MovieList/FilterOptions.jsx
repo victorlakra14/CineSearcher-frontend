@@ -1,21 +1,27 @@
 import { useState } from "react";
 
-import { Close, Filter } from "@bigbinary/neeto-icons";
-import { Button, Checkbox, Input, Typography } from "@bigbinary/neetoui";
-import useFilterStore from "stores/useFilterStore";
+import { Close, Filter } from "neetoicons";
+import { Button, Checkbox, Typography } from "neetoui";
+import { Form as NeetoUiForm } from "neetoui/formik";
+import { useTranslation } from "react-i18next";
 
-export const FilterOptions = () => {
+import { AutoSubmitOnBlurInput } from "./AutoSubmitOnBlurInput";
+import { YEAR_INPUT_VALIDATION_SCHEMA } from "./constants";
+
+export const FilterOptions = ({
+  year,
+  showMovies,
+  showSeries,
+  toggleIsMovie,
+  toggleIsSeries,
+  setYear,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { year, isMovie, isSeries, setYear, toggleIsMovie, toggleIsSeries } =
-    useFilterStore();
+  const { t } = useTranslation();
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
-  };
-
-  const handleInputChange = e => {
-    setYear(e.target.value);
   };
 
   const handleModalClose = () => {
@@ -27,7 +33,6 @@ export const FilterOptions = () => {
       <div>
         <Button
           icon={() => <Filter size={20} />}
-          label=""
           size="small"
           style="text"
           onClick={toggleModal}
@@ -44,27 +49,37 @@ export const FilterOptions = () => {
             />
           </div>
           <div className="flex flex-col space-y-4">
-            <Input
-              label="Year"
-              placeholder="YYYY"
-              size="small"
-              value={year}
-              onChange={handleInputChange}
-            />
+            <NeetoUiForm
+              formProps={{ noValidate: true }}
+              formikProps={{
+                initialValues: { releaseYear: year || "" },
+                validationSchema: YEAR_INPUT_VALIDATION_SCHEMA,
+                onSubmit: values => {
+                  setYear(values.releaseYear);
+                },
+              }}
+            >
+              <AutoSubmitOnBlurInput
+                label={t("year")}
+                name="releaseYear"
+                placeholder={t("yearInputPlaceholder")}
+                size="small"
+              />
+            </NeetoUiForm>
             <Typography style="body2" weight="semibold">
-              Type
+              {t("type")}
             </Typography>
             <div className="flex">
               <Checkbox
-                checked={isMovie}
+                checked={showMovies}
                 id="checkbox_movie"
-                label="Movie"
+                label={t("movie")}
                 onChange={toggleIsMovie}
               />
               <Checkbox
-                checked={isSeries}
+                checked={showSeries}
                 id="checkbox_series"
-                label="Series"
+                label={t("series")}
                 onChange={toggleIsSeries}
               />
             </div>

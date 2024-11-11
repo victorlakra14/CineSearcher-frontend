@@ -1,6 +1,6 @@
-import { Toastr } from "@bigbinary/neetoui";
 import axios from "axios";
 import { keysToCamelCase } from "neetocist";
+import { Toastr } from "neetoui";
 
 const setHttpHeaders = () => {
   axios.defaults.headers = {
@@ -15,10 +15,6 @@ const shouldShowToastr = response =>
 const showSuccessToastr = response => {
   if (shouldShowToastr(response.data)) Toastr.success(response.data);
 };
-
-// const showErrorToastr = error => {
-//     if (error.message === )
-// }
 
 const transformResponseKeysToCamelCase = response => {
   if (response.data) response.data = keysToCamelCase(response.data);

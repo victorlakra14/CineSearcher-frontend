@@ -1,54 +1,47 @@
-import { DEFAULT_PAGE_INDEX } from "constants/productListConstants";
-
 import { useEffect, useRef, useState } from "react";
 
-import { filterNonNull } from "@bigbinary/neeto-cist";
-import { Search } from "@bigbinary/neeto-icons";
-import { Input, Kbd, Pagination, Typography } from "@bigbinary/neetoui";
 import { useFetchMovies } from "hooks/reactQuery/useMoviesApi";
 import useDebounce from "hooks/useDebounce";
 import useFuncDebounce from "hooks/useFuncDebounce";
 import useQueryParams from "hooks/useQueryParams";
+import { filterNonNull } from "neetocist";
+import { Search } from "neetoicons";
+import { Input, Kbd, NoData, Pagination } from "neetoui";
 import { isEmpty, mergeLeft } from "ramda";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import routes from "routes";
-import useFilterStore from "stores/useFilterStore";
+import { createParams } from "utils/createParams";
+import { getType } from "utils/getType";
 import { buildUrl } from "utils/url";
 
+import { DEFAULT_PAGE_INDEX } from "./constants";
 import { FilterOptions } from "./FilterOptions";
 import { MovieCard } from "./MovieCard";
 import { MoviesHistory } from "./MoviesHistory";
-import PageLoader from "./PageLoader";
+
+import PageLoader from "../commons/PageLoader";
 
 export const MovieList = () => {
+  const [searchInput, setSearchInput] = useState("");
+  const [showMovies, setShowMovies] = useState(false);
+  const [showSeries, setShowSeries] = useState(false);
+
+  const { t } = useTranslation();
   const inputRef = useRef();
   const history = useHistory();
   const queryParams = useQueryParams();
-  const { page, s } = queryParams;
-
-  const [searchInput, setSearchInput] = useState("");
+  const { page, search, year } = queryParams;
   const debouncedSearchKey = useDebounce(searchInput);
 
-  const { year, isMovie, isSeries } = useFilterStore();
+  const [releaseYear, setReleaseYear] = useState(year);
 
-  const getType = () => {
-    if (isMovie && isSeries) {
-      return undefined;
-    } else if (isMovie) {
-      return "movie";
-    } else if (isSeries) {
-      return "series";
-    }
-
-    return undefined;
-  };
-
-  const moviesParams = {
-    s,
+  const moviesParams = createParams({
+    s: search,
     page: Number(page) || DEFAULT_PAGE_INDEX,
-    y: year || undefined,
-    type: getType(),
-  };
+    y: releaseYear || undefined,
+    type: getType(showMovies, showSeries),
+  });
 
   const { data: { Search: movies = [], totalResults } = {}, isLoading } =
     useFetchMovies(moviesParams);
@@ -59,15 +52,54 @@ export const MovieList = () => {
     );
 
   const updateQueryParams = useFuncDebounce(value => {
-    const params = {
+    const params = createParams({
       page: DEFAULT_PAGE_INDEX,
-      s: value || null,
-    };
+      search: value || null,
+      year: releaseYear || null,
+      showMovies: showMovies || null,
+      showSeries: showSeries || null,
+    });
 
     setSearchInput(value);
 
     history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
   });
+
+  const handleYearChange = newYear => {
+    setReleaseYear(newYear);
+    const params = createParams({
+      page: DEFAULT_PAGE_INDEX,
+      search: searchInput || null,
+      year: newYear || null,
+      showMovies: showMovies || null,
+      showSeries: showSeries || null,
+    });
+    history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
+  };
+
+  const toggleIsMovie = () => {
+    setShowMovies(prev => !prev);
+    const params = createParams({
+      page: DEFAULT_PAGE_INDEX,
+      search: searchInput || null,
+      year: releaseYear || null,
+      showMovies: !showMovies || null,
+      showSeries: showSeries || null,
+    });
+    history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
+  };
+
+  const toggleIsSeries = () => {
+    setShowSeries(prev => !prev);
+    const params = createParams({
+      page: DEFAULT_PAGE_INDEX,
+      search: searchInput || null,
+      year: releaseYear || null,
+      showMovies: showMovies || null,
+      showSeries: !showSeries || null,
+    });
+    history.replace(buildUrl(routes.movies.index, filterNonNull(params)));
+  };
 
   useEffect(() => {
     const handleKeyDown = event => {
@@ -85,12 +117,12 @@ export const MovieList = () => {
   }, [debouncedSearchKey]);
 
   return (
-    <div className="grid grid-cols-7">
-      <div className="col-span-5 pb-20 pl-20 pr-10 pt-6">
+    <div className="mt-2 grid grid-cols-7">
+      <div className="col-span-5 border-r-2 pb-20 pl-20 pr-10 pt-6">
         <div className="flex gap-2">
           <Input
             autoFocus
-            placeholder="Search"
+            placeholder={t("search")}
             prefix={<Search />}
             ref={inputRef}
             suffix={<Kbd keyName="/" />}
@@ -101,30 +133,35 @@ export const MovieList = () => {
               setSearchInput(value);
             }}
           />
-          <FilterOptions />
+          <FilterOptions
+            setYear={handleYearChange}
+            showMovies={showMovies}
+            showSeries={showSeries}
+            toggleIsMovie={toggleIsMovie}
+            toggleIsSeries={toggleIsSeries}
+            year={releaseYear}
+          />
         </div>
         {isLoading ? (
           <PageLoader />
         ) : (
           <>
             {isEmpty(movies) ? (
-              <div className="flex h-screen w-full items-center justify-center">
-                <Typography style="h2" weight="bold">
-                  Search to find your movie!!!
-                </Typography>
+              <div className="flex h-96 w-full items-center justify-center">
+                <NoData title={t("noMovies")} />
               </div>
             ) : (
               <>
                 <div>
                   <div className="mt-8 flex flex-wrap gap-5 space-y-2 px-10">
-                    {movies.map(movie => (
+                    {movies.map(({ imdbID, Poster, Title, Type, Year }) => (
                       <MovieCard
-                        id={movie.imdbID}
-                        key={movie.imdbID}
-                        posterURL={movie.Poster}
-                        title={movie.Title}
-                        type={movie.Type}
-                        year={movie.Year}
+                        id={imdbID}
+                        key={imdbID}
+                        posterURL={Poster}
+                        title={Title}
+                        type={Type}
+                        year={Year}
                       />
                     ))}
                   </div>
