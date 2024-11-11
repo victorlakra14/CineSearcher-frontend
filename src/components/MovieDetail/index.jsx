@@ -15,11 +15,12 @@ import { setDefaultImage } from "utils/setDefaultImage";
 import { DetailRow } from "./DetailRow";
 
 export const MovieDetail = ({ id, title }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const params = createParams({
     i: id,
   });
 
-  const [isOpen, setIsOpen] = useState(false);
   const { t } = useTranslation();
   const addToHistory = useViewHistoryStore.pickFrom();
   const { favorites, toggleFavorite } = useFavoritesStore.pick();
